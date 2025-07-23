@@ -3,15 +3,13 @@ import { PDFDocument, rgb } from 'pdf-lib';
 import { detectLanguage } from '@/lib/languages';
 import { extractTextContent } from '@/lib/pdf-utils';
 
-// Mock OpenAI translation function (replace with actual OpenAI API call)
-async function translateText(text: string): Promise<string> {
+// OpenAI translation function
+async function translateText(text: string, targetLanguage: string): Promise<string> {
   // This is a placeholder - replace with actual OpenAI API integration
   const openaiApiKey = process.env.OPENAI_API_KEY;
   
   if (!openaiApiKey) {
-    // For testing purposes, return a mock translation
-    console.log('OpenAI API key not configured, using mock translation');
-    return `[Translated: ${text}]`;
+    throw new Error('OpenAI API key not configured');
   }
 
   try {
@@ -27,7 +25,7 @@ async function translateText(text: string): Promise<string> {
           {
             role: 'system',
                     content: `You are a professional translator specializing in English and Punjabi translation. 
-        Translate the following text to the appropriate language (English or Punjabi). 
+        Translate the following text to ${targetLanguage === 'pa' ? 'Punjabi (Gurmukhi script)' : 'English'}. 
         Maintain the original meaning, tone, and context. 
         For Punjabi, use proper Gurmukhi script. 
         Return only the translated text without any explanations or additional content.`
@@ -169,7 +167,7 @@ export async function POST(request: NextRequest) {
     const translatedTexts: string[] = [];
     for (const text of originalTexts) {
       if (text.trim()) {
-        const translated = await translateText(text);
+        const translated = await translateText(text, targetLanguage);
         translatedTexts.push(translated);
       } else {
         translatedTexts.push(text); // Preserve empty lines
