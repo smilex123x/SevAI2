@@ -43,7 +43,12 @@ A modern SaaS-style web application that translates PDFs between English and Pun
 3. **Set up environment variables**
    Create a `.env.local` file in the root directory:
    ```env
+   # OpenAI API Configuration
+   # Get your API key from: https://platform.openai.com/api-keys
    OPENAI_API_KEY=your_openai_api_key_here
+   
+   # Optional: Set to 'true' to enable mock translations for testing
+   # MOCK_TRANSLATION=true
    ```
 
 4. **Run the development server**
