@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useTranslationStore } from '@/lib/store';
 import FileUpload from '@/components/FileUpload';
 import LanguageSelector from '@/components/LanguageSelector';
@@ -16,14 +16,7 @@ export default function Home() {
     error 
   } = useTranslationStore();
 
-  // Auto-detect language when file is uploaded
-  useEffect(() => {
-    if (file && !detectedLanguage) {
-      detectLanguageFromFile();
-    }
-  }, [file, detectedLanguage]);
-
-  const detectLanguageFromFile = async () => {
+  const detectLanguageFromFile = useCallback(async () => {
     if (!file) return;
 
     try {
@@ -42,7 +35,14 @@ export default function Home() {
     } catch (error) {
       console.error('Language detection failed:', error);
     }
-  };
+  }, [file, setDetectedLanguage]);
+
+  // Auto-detect language when file is uploaded
+  useEffect(() => {
+    if (file && !detectedLanguage) {
+      detectLanguageFromFile();
+    }
+  }, [file, detectedLanguage, detectLanguageFromFile]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">

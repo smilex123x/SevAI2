@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Play, Loader2, CheckCircle } from 'lucide-react';
+import { Play, Loader2 } from 'lucide-react';
 import { useTranslationStore } from '@/lib/store';
 import { LANGUAGES } from '@/lib/languages';
 import toast from 'react-hot-toast';

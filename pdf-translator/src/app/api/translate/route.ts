@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PDFDocument, PDFPage, PDFFont, rgb } from 'pdf-lib';
+import { PDFDocument, rgb } from 'pdf-lib';
 import { detectLanguage } from '@/lib/languages';
 import { extractTextContent } from '@/lib/pdf-utils';
 
 // Mock OpenAI translation function (replace with actual OpenAI API call)
-async function translateText(text: string, targetLanguage: string): Promise<string> {
+async function translateText(text: string): Promise<string> {
   // This is a placeholder - replace with actual OpenAI API integration
   const openaiApiKey = process.env.OPENAI_API_KEY;
   
@@ -24,11 +24,11 @@ async function translateText(text: string, targetLanguage: string): Promise<stri
         messages: [
           {
             role: 'system',
-            content: `You are a professional translator specializing in English and Punjabi translation. 
-            Translate the following text to ${targetLanguage === 'pa' ? 'Punjabi (Gurmukhi script)' : 'English'}. 
-            Maintain the original meaning, tone, and context. 
-            For Punjabi, use proper Gurmukhi script. 
-            Return only the translated text without any explanations or additional content.`
+                    content: `You are a professional translator specializing in English and Punjabi translation. 
+        Translate the following text to the appropriate language (English or Punjabi). 
+        Maintain the original meaning, tone, and context. 
+        For Punjabi, use proper Gurmukhi script. 
+        Return only the translated text without any explanations or additional content.`
           },
           {
             role: 'user',
@@ -60,8 +60,7 @@ async function extractTextFromPDF(pdfBuffer: ArrayBuffer): Promise<string[]> {
 // Create translated PDF
 async function createTranslatedPDF(
   originalTexts: string[], 
-  translatedTexts: string[], 
-  targetLanguage: string
+  translatedTexts: string[]
 ): Promise<Uint8Array> {
   const pdfDoc = await PDFDocument.create();
   
@@ -168,7 +167,7 @@ export async function POST(request: NextRequest) {
     const translatedTexts: string[] = [];
     for (const text of originalTexts) {
       if (text.trim()) {
-        const translated = await translateText(text, targetLanguage);
+        const translated = await translateText(text);
         translatedTexts.push(translated);
       } else {
         translatedTexts.push(text); // Preserve empty lines
@@ -178,8 +177,7 @@ export async function POST(request: NextRequest) {
     // Create translated PDF
     const translatedPdfBuffer = await createTranslatedPDF(
       originalTexts, 
-      translatedTexts, 
-      targetLanguage
+      translatedTexts
     );
 
     // In a real implementation, you would:

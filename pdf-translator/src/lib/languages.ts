@@ -45,6 +45,7 @@ export const FRANC_TO_LANGUAGE: Record<string, string> = {
 
 export function detectLanguage(text: string): string {
   // Import franc dynamically to avoid SSR issues
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const franc = require('franc');
   const detected = franc(text);
   

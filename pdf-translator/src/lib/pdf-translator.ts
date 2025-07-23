@@ -105,7 +105,7 @@ export class PDFTranslator {
 
   private async replaceTextInPage(page: PDFPage, result: TranslationResult): Promise<void> {
     // Get the page dimensions
-    const { width, height } = page.getSize();
+    const { height } = page.getSize();
     
     // Choose appropriate font based on language
     const font = this.selectFont(result.translatedText);
@@ -137,7 +137,7 @@ export class PDFTranslator {
     });
   }
 
-  private selectFont(text: string): PDFFont {
+  private selectFont(_text: string): PDFFont {
     // Simple heuristic: if text contains Punjabi characters, use a font that supports it
     // const hasPunjabi = /[\u0A00-\u0A7F]/.test(text); // Gurmukhi Unicode range
     
