@@ -46,7 +46,7 @@ export const FRANC_TO_LANGUAGE: Record<string, string> = {
 export function detectLanguage(text: string): string {
   // Import franc dynamically to avoid SSR issues
   const franc = require('franc');
-  const detected = franc(text, { minLength: 3 });
+  const detected = franc(text);
   
   // Map franc result to our language codes
   return FRANC_TO_LANGUAGE[detected] || 'en';
