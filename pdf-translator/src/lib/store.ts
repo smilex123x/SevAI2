@@ -42,7 +42,7 @@ const initialState = {
   error: null,
 };
 
-export const useTranslationStore = create<TranslationState>((set: any) => ({
+export const useTranslationStore = create<TranslationState>((set) => ({
   ...initialState,
   
   setFile: (file: File) => set({ 

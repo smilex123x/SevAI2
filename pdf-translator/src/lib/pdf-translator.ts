@@ -118,8 +118,8 @@ export class PDFTranslator {
     const originalWidth = result.width;
     
     // Adjust positioning if translated text is longer/shorter
-    let x = result.x;
-    let y = height - result.y; // Convert from PDF coordinates
+    const x = result.x;
+    const y = height - result.y; // Convert from PDF coordinates
     
     // If translated text is longer, we might need to adjust
     if (textWidth > originalWidth) {
@@ -139,7 +139,7 @@ export class PDFTranslator {
 
   private selectFont(text: string): PDFFont {
     // Simple heuristic: if text contains Punjabi characters, use a font that supports it
-    const hasPunjabi = /[\u0A00-\u0A7F]/.test(text); // Gurmukhi Unicode range
+    // const hasPunjabi = /[\u0A00-\u0A7F]/.test(text); // Gurmukhi Unicode range
     
     const helveticaFont = this.fonts.get('Helvetica');
     if (!helveticaFont) {
@@ -160,8 +160,7 @@ export class PDFTranslator {
   // Alternative approach: Create a new PDF with preserved structure
   async createTranslatedPDF(
     originalTexts: ExtractedText[],
-    translatedTexts: string[],
-    targetLanguage: string
+    translatedTexts: string[]
   ): Promise<Uint8Array> {
     const newPdfDoc = await PDFDocument.create();
     
