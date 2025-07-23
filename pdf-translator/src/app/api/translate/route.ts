@@ -175,7 +175,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create translated PDF
-    const translatedPdfBuffer = await createTranslatedPDF(
+    await createTranslatedPDF(
       originalTexts, 
       translatedTexts
     );

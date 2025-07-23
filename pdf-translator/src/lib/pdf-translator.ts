@@ -137,6 +137,7 @@ export class PDFTranslator {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private selectFont(_text: string): PDFFont {
     // Simple heuristic: if text contains Punjabi characters, use a font that supports it
     // const hasPunjabi = /[\u0A00-\u0A7F]/.test(text); // Gurmukhi Unicode range
